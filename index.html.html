@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ОЮУНЛАГ Сургууль - ХИЧЭЭЛИЙН ХУВААРЬ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --border: #e2e8f0;
+            --accent: #3b82f6;
+            --header-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --border: #334155;
+            --header-bg: #1e293b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background 0.3s, color 0.3s; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container { 
+            width: 100%;
+            max-width: 1200px; 
+        }
+
+       
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .logo h1 { font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: -1px; }
+        .logo p { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+
+       
+        .theme-toggle {
+            cursor: pointer;
+            width: 60px;
+            height: 30px;
+            background: #cbd5e1;
+            border-radius: 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+            justify-content: space-between;
+        }
+        [data-theme="dark"] .theme-toggle { background: var(--primary); }
+
+        .toggle-circle {
+            position: absolute;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s ease;
+            z-index: 2;
+        }
+        [data-theme="dark"] .toggle-circle { transform: translateX(30px); }
+
+        .theme-toggle svg { width: 16px; height: 16px; fill: #64748b; z-index: 1; }
+        [data-theme="dark"] .theme-toggle svg { fill: #fff; }
+
+       
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+        .tab-btn {
+            padding: 10px 20px; border: 1px solid var(--border); background: var(--bg-card);
+            color: var(--text-main); font-weight: 600; border-radius: 10px; cursor: pointer; white-space: nowrap;
+        }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        
+        .table-wrapper {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: auto;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        table { width: 100%; border-collapse: collapse; min-width: 900px; table-layout: fixed; }
+        
+        th { 
+            background: var(--header-bg); 
+            padding: 20px 10px; 
+            font-size: 11px; 
+            color: #64748b; 
+            border-bottom: 2px solid var(--border);
+        }
+        
+        td { padding: 12px 8px; border-bottom: 1px solid var(--border); text-align: center; vertical-align: middle; }
+
+        
+        .t-profile { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .t-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--accent); padding: 2px; background: #fff; }
+        .t-name { font-size: 12px; font-weight: 700; color: var(--text-main); }
+
+       
+        .lesson {
+            padding: 8px; border-radius: 10px; font-size: 11px; font-weight: 600;
+            display: inline-block; width: 95%; box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+        .it { background: #dcfce7; color: #166534; }
+        .steam { background: #dbeafe; color: #1e40af; }
+        .songon { background: #fef3c7; color: #92400e; }
+        .empty { color: #cbd5e1; font-size: 16px; }
+
+        .time-col { width: 80px; font-weight: 800; color: var(--accent); border-right: 1px solid var(--border); }
+        .time-sub { font-size: 10px; color: #94a3b8; display: block; font-weight: 400; }
+
+        
+        tr:hover td { background: rgba(37, 99, 235, 0.03); }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            header { flex-direction: column; gap: 15px; text-align: center; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+<div class="container">
+    <header>
+        <div class="logo">
+            <h1>ОЮУНЛАГ СУРГУУЛЬ</h1>
+            <p>МАТ СОНГОН СТЕАМ ТЭНХИМ</p>
+        </div>
+        
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <div class="toggle-circle"></div>
+            <svg viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393.007a9 9 0 0 0 9.257 9.257 9 9 0 1 1-9.65-9.264Z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10ZM2 13h2a1 1 0 1 0 0-2H2a1 1 0 1 0 0 2Zm18 0h2a1 1 0 1 0 0-2h-2a1 1 0 1 0 0 2ZM11 2v2a1 1 0 1 0 2 0V2a1 1 0 1 0-2 0Zm0 18v2a1 1 0 1 0 2 0v-2a1 1 0 1 0-2 0ZM5.989 4.575a1 1 0 1 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414L5.989 4.575Zm12.022 12.022a1 1 0 1 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM4.575 18.011a1 1 0 0 0 1.414 1.414l1.414-1.414a1 1 0 0 0-1.414-1.414l-1.414 1.414Zm12.022-12.022a1 1 0 0 0 1.414 1.414l1.414-1.414a1 1 0 0 0-1.414-1.414l-1.414 1.414Z"/></svg>
+        </div>
+    </header>
+
+    <div class="tabs" id="tabs">
+        <button class="tab-btn active" onclick="render('Да')">Даваа</button>
+        <button class="tab-btn" onclick="render('Мя')">Мягмар</button>
+        <button class="tab-btn" onclick="render('Лх')">Лхагва</button>
+        <button class="tab-btn" onclick="render('Пү')">Пүрэв</button>
+        <button class="tab-btn" onclick="render('Ба')">Баасан</button>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead id="thead"></thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const teachers = [
+        { n: "Пүрэвбат", i: "https://ui-avatars.com/api/?name=P&background=0D8ABC&color=fff" },
+        { n: "Оюун", i: "https://ui-avatars.com/api/?name=O&background=60a5fa&color=fff" },
+        { n: "Амгалан-Энх", i: "https://ui-avatars.com/api/?name=A&background=2563eb&color=fff" },
+        { n: "Билгүүн", i: "https://ui-avatars.com/api/?name=B&background=4ade80&color=fff" },
+        { n: "Баярхүү", i: "https://ui-avatars.com/api/?name=Ba&background=f59e0b&color=fff" },
+        { n: "Ариунзул", i: "https://ui-avatars.com/api/?name=Ar&background=ec4899&color=fff" }
+    ];
+
+   const schedule = {
+        "Да": [
+            ["1", "08:00", "-", "4а STEAM", "-", "5г Сонгон", "-", "-"],
+            ["2", "08:45", "-", "-", "2г IT", "-", "1б Сонгон", "4а Сонгон"],
+            ["3", "09:30", "3а Сонгон", "-", "2в IT", "-", "2б Сонгон", "4г Сонгон"],
+            ["4", "10:15", "-", "4г STEAM", "3а IT", "5в Сонгон", "1б Сонгон", "-"],
+            ["5", "11:00", "-", "-", "3б IT", "-", "-", "1в Сонгон"],
+            ["6", "11:45", "-", "5в STEAM", "-", "-", "-", "-"],
+            ["7", "12:30", "1а Сонгон", "5а STEAM", "-", "5г Сонгон", "-", "1в Сонгон"],
+            ["8", "13:15", "3в Сонгон", "4б STEAM", "-", "5б Сонгон", "2в Сонгон", "-"]
+        ],
+        "Мя": [
+            ["1", "8:00", "-", "-", "3в IT", "1г Сонгон", "-", "-"],
+            ["2", "8:45", "-", "-", "3б IT", "1г Сонгон", "2г Сонгон", "4г Сонгон"],
+            ["3", "9:30", "-", "1б STEAM", "1б STEAM", "-", "2б Сонгон", "4а Сонгон"],
+            ["4", "10:15", "-", "2г STEAM", "3г IT", "-", "-", "4в Сонгон"],
+            ["5", "11:00", "3г Сонгон", "3а STEAM", "-", "-", "2в Сонгон", "-"],
+            ["6", "11:45", "3б Сонгон", "-", "-", "5в Сонгон", "2в Сонгон", "-"],
+            ["7", "12:30", "-", "1г STEAM", "1г STEAM", "5г Сонгон", "2а Сонгон", "-"],
+            ["8", "13:15", "1а Сонгон", "3б STEAM", "-", "-", "-", "4в Сонгон"]
+        ],
+        "Лх": [
+            ["1", "8:00", "3а Сонгон", "-", "2а IT", "-", "-", "4а Сонгон"],
+            ["2", "8:45", "3в Сонгон", "2в STEAM", "-", "-", "2г Сонгон", "4б Сонгон"],
+            ["3", "9:30", "-", "-", "3в IT", "5а Сонгон", "2б Сонгон", "-"],
+            ["4", "10:15", "-", "-", "3г IT", "5а Сонгон", "2а Сонгон", "-"],
+            ["5", "11:00", "3г Сонгон", "2б STEAM", "-", "-", "-", "-"],
+            ["6", "11:45", "-", "3в STEAM", "-", "-", "-", "4в Сонгон"],
+            ["7", "12:30", "-", "1а STEAM", "1а STEAM", "5б Сонгон", "-", "-"],
+            ["8", "13:15", "3а Сонгон", "-", "-", "5в Сонгон", "-", "-"]
+        ],
+        "Пү": [
+            ["1", "8:00", "3г Сонгон", "-", "-", "-", "2г Сонгон", "4в Сонгон"],
+            ["2", "8:45", "3б Сонгон", "-", "2в IT", "1г Сонгон", "-", "-"],
+            ["3", "9:30", "-", "-", "2б IT", "1г Сонгон", "2в Сонгон", "4б Сонгон"],
+            ["4", "10:15", "3а Сонгон", "-", "-", "-", "1б Сонгон", "4а Сонгон"],
+            ["5", "11:00", "3в Сонгон", "-", "-", "-", "-", "-"],
+            ["6", "11:45", "3г Сонгон", "5г STEAM", "-", "5а Сонгон", "-", "-"],
+            ["7", "12:30", "-", "5б STEAM", "-", "-", "1б Сонгон", "4б Сонгон"],
+            ["8", "13:15", "1а Сонгон", "4в STEAM", "-", "5г Сонгон", "-", "-"]
+        ],
+        "Ба": [
+            ["1", "8:00", "3б Сонгон", "-", "-", "-", "2б Сонгон", "4г Сонгон"],
+            ["2", "8:45", "3в Сонгон", "2а STEAM", "-", "-", "2г Сонгон", "4б Сонгон"],
+            ["3", "9:30", "3б Сонгон", "-", "2а IT", "5б Сонгон", "-", "-"],
+            ["4", "10:15", "-", "-", "2г IT", "5а Сонгон", "-", "1в Сонгон"],
+            ["5", "11:00", "-", "-", "-", "-", "-", "1в Сонгон"],
+            ["6", "11:45", "-", "3г STEAM", "3а IT", "5в Сонгон", "-", "-"],
+            ["7", "12:30", "1а Сонгон", "1в STEAM", "1в STEAM", "-", "2а Сонгон", "4г Сонгон"],
+            ["8", "13:15", "-", "-", "2б IT", "5б Сонгон", "2а Сонгон", "-"]
+        ]
+    };
+
+    function toggleTheme() {
+        const body = document.body;
+        const current = body.getAttribute('data-theme');
+        body.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+    }
+
+    function render(day) {
+        
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.innerText.includes(day)));
+
+        
+        const thead = document.getElementById('thead');
+        thead.innerHTML = `<tr><th class="time-col">ЦАГ</th>` + 
+            teachers.map(t => `<th><div class="t-profile"><img src="${t.i}" class="t-img"><span class="t-name">${t.n}</span></div></th>`).join('') + `</tr>`;
+
+        
+        const tbody = document.getElementById('tbody');
+        tbody.innerHTML = (schedule[day] || []).map(row => `
+            <tr>
+                <td class="time-col">${row[0]} <span class="time-sub">${row[1]}</span></td>
+                ${row.slice(2).map(cell => {
+                    if(cell === "-") return `<td><span class="empty">·</span></td>`;
+                    const cls = cell.includes("IT") ? "it" : (cell.includes("STEAM") ? "steam" : "songon");
+                    return `<td><span class="lesson ${cls}">${cell}</span></td>`;
+                }).join('')}
+            </tr>
+        `).join('');
+    }
+
+    render('Да');
+</script>
+
+</body>
+</html>
